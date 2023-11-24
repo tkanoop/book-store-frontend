@@ -1,5 +1,7 @@
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
+import Nav from '../components/Nav/Nav';
+import Footer from '../components/Footer/Footer';
 
 const UserProfile = () => {
   // Dummy data for the user and purchased books
@@ -15,7 +17,9 @@ const UserProfile = () => {
   ];
 
   return (
-    <div className="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md">
+    <>
+    <Nav/> 
+     <div className="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md">
       <div className="flex items-center mb-8">
         <FaUser className="w-12 h-12 mr-4" />
         <div>
@@ -34,6 +38,9 @@ const UserProfile = () => {
         </ul>
       </div>
     </div>
+    <Footer/>
+    </>
+
   );
 };
 

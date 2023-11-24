@@ -34,6 +34,14 @@ const Login = () => {
       }
     }
   };
+  const handleBook=()=>{
+    try {
+         axios.post('http://localhost:8000/api/auth/booksAdding')
+        
+    } catch (error) {
+        
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -79,6 +87,9 @@ const Login = () => {
                 Sign Up
               </button>
             </Link>
+            <button onClick={handleBook}>Click to add book
+
+            </button>
           </div>
         </div>
       </div>
