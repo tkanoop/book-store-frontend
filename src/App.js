@@ -11,6 +11,7 @@ import useBookContext from './hooks/use-books-context'
 import Home from "./pages/Home";
 import SingleProduct from "./pages/SingleProduct";
 import CartPage from "./pages/CartPage";
+import OrderSuccess from "./pages/OrderSuccess";
 
 function App() {
 	const user = localStorage.getItem("token");
@@ -28,6 +29,7 @@ function App() {
 			<Route path="/user-profile" exact element={<UserProfile />} />
 			<Route path="/product/:_id" element={<SingleProduct/>} />
 			<Route path="/cart" element={<CartPage/>} />
+			<Route path="/success" element={<OrderSuccess/>}/>
 		</Routes>
 	);
 }

@@ -6,9 +6,6 @@ import axios from 'axios';
 
 const Cart = () => {
 
-const {cart,setCart}=useBookContext()
-let total=0
-useEffect(() => {
   const fetchCart=async()=>{
     const token=localStorage.getItem('token')
     const response=await axios.get('http://localhost:8000/api/auth/cartView',{
@@ -20,6 +17,11 @@ useEffect(() => {
     setCart(response.data.cart)
     
   }
+
+const {cart,setCart}=useBookContext()
+let total=0
+useEffect(() => {
+
   fetchCart()  
  
  
@@ -31,25 +33,43 @@ if(cart.length>0){
 console.log(cart);
 
 
-const changeQty=async()=>{
+const changeQty=async(qty,productId)=>{
+  const body = {
+    qty,productId
+  };
+  
   const token=localStorage.getItem('token')
-    await axios.get('http://localhost:8000/api/auth/change-qty',{
+    await axios.patch('http://localhost:8000/api/auth/change-qty',body,{
         headers:{
             Authorization: `Bearer ${token}`,
         },
     })
+    fetchCart()
+
+}
+
+const handleOrder=async()=>{
+
+  const token=localStorage.getItem('token')
+  await axios.post('http://localhost:8000/api/auth/make-order',{},{
+    headers:
+    {
+      Authorization:`Bearer ${token}`,
+    }
+  })
+  window.location='/success'
+
+
 
 }
  
 
 
- 
-
   return (
     <div className="container mx-auto my-8 ">
       <h1 className="text-3xl font-bold mb-4 text-center">Shopping Cart</h1>
       <ul className="divide-y divide-gray-200">
-      { cart.length > 0 ? (
+      {cart && cart.length > 0 ? (
         cart.map((item) => (
           <li  className="flex justify-center items-center py-2 ml-6">
             <div className="flex items-center space-x-4">
@@ -64,14 +84,14 @@ const changeQty=async()=>{
               </div>
             </div>
             <div className="flex items-center space-x-4 mt-2 md:mt-0 pl-6 ">
-              <button
+              <button onClick={()=>changeQty(1,item?.productId)}
                 className="text-sm bg-blue-500 text-white px-2 py-1  rounded"
                 
               >
                 +
               </button>
               <span>{item?.Quantity}</span>
-              <button onClick={changeQty}
+              <button onClick={()=>changeQty(-1,item?.productId)} 
                 className="text-sm bg-red-500 text-white px-2 py-1 rounded"
                 
               >
@@ -93,7 +113,7 @@ const changeQty=async()=>{
       </ul>
       <div className="mt-4 flex flex-col items-center">
         <h3 className="text-xl font-bold">Total: ${total}</h3>
-        <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">
+        <button className="bg-green-500 text-white px-4 py-2 rounded mt-2 " onClick={handleOrder}>
           Checkout
         </button>
       </div>
@@ -102,3 +122,7 @@ const changeQty=async()=>{
 };
 
 export default Cart;
+
+
+
+
