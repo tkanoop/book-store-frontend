@@ -1,8 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from'axios'
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
 
 const Card = ({ book }) => {
+  const navigate=useNavigate()
 
 const token=localStorage.getItem('token')
 const bookId=book._id
@@ -14,12 +19,18 @@ const bookId=book._id
             token:token,
             bookId:bookId
         }
+        if(localStorage.getItem('token')){
         const response =await axios.post("http://localhost:8000/api/auth/cart",postData,{
             headers:{
                 Authorization: `Bearer ${token}`,
             },
+            
 
         })
+      }else{
+        navigate('/login')
+
+      }
 
 
     }

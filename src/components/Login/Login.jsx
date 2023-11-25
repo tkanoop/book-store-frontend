@@ -2,12 +2,18 @@ import './Login.css'; // Assuming you have your custom styles in Login.css
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
+import * as api from "../API/API"
 const Login = () => {
   const [data, setData] = useState({
     email: '',
     password: '',
   });
+  const { setAuth } = useAuth()
+
+  const navigate=useNavigate()
 
   const [error, setError] = useState('');
 
@@ -21,9 +27,9 @@ const Login = () => {
     try {
       const url = 'http://localhost:8000/api/auth';
       const { data: res } = await axios.post(url, data);
-      localStorage.setItem('token', res.data);
-      window.location = '/';
-      console.log(res.message);
+      console.log(res);
+      localStorage.setItem('token',res.data)
+      navigate('/')
     } catch (error) {
       if (
         error.response &&
@@ -42,7 +48,19 @@ const Login = () => {
         
     }
   }
-
+  useEffect(() => {
+    const authenticationFunction = async () => {
+      try {
+        const user = await api.authenticate()
+        setAuth({ id: user.data.id })
+        navigate('/')
+      }
+      catch (err) {
+        console.log('signup');
+      }
+    }
+    authenticationFunction()
+  }, [])
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex flex-col lg:flex-row w-full lg:w-9/12 lg:max-w-screen-xl bg-white rounded-lg shadow-md overflow-hidden">

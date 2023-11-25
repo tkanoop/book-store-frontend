@@ -4,31 +4,41 @@ import Card from '../components/Card/Card';
 import Footer from '../components/Footer/Footer';
 import BooksContext from '../context/books';
 import axios from 'axios';
+import { useState } from 'react';
+import * as api from "../components/API/API"
+import useAuth from '../hooks/useAuth';
+import useBookContext from '../hooks/use-books-context';
 
 function Home() {
   const { setBooks,books } = useContext(BooksContext);
-  console.log("books",books);
+  const {auth,setAuth}=useAuth()
+  const {cart} =useBookContext()
   useEffect(() => {
     const fetchBooks = async () =>{
-      const response =await axios.get('http://localhost:8000/api/auth/books')
-      setBooks(response.data.book)
-      console.log(response.data.book);
-      
+      try{
+        const response =await api.fetchBooks()
+        setBooks(response.data.book)
+        console.log(response);
+        const auth=await api.authenticate()
+        setAuth({id:auth.data.id})
+      }
+      catch(err){
+        setAuth(false)
+        console.log('unauthorized');
+      }
   }
   fetchBooks ()
   
   }, [])
-  
- 
-  
 
+  
   const renderedBooks = books.map((book) => {
     return <Card key={book._id} book={book} />;
   });
 
   return (
     <>
-      <Nav />
+      <Nav loggedIn={auth} cart={cart}/>
       <div className='book flex flex-wrap'>{renderedBooks}</div>
       <Footer />
     </>

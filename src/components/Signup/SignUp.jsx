@@ -2,6 +2,9 @@ import './SignUp.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
+import * as api from "../API/API"
 
 const SignUp = () => {
   const [data, setData] = useState({
@@ -10,6 +13,7 @@ const SignUp = () => {
     email: '',
     password: '',
   });
+  const { setAuth } = useAuth()
 
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -37,6 +41,19 @@ const SignUp = () => {
     }
   };
 
+  useEffect(() => {
+    const authenticationFunction = async () => {
+      try {
+        const user = await api.authenticate()
+        setAuth({ id: user.data.id })
+        navigate('/')
+      }
+      catch (err) {
+        console.log('signup');
+      }
+    }
+    authenticationFunction()
+  }, [])
   return (
     <div className="signup_container">
       <div className="signup_form_container">

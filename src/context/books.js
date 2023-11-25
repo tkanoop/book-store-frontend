@@ -1,45 +1,49 @@
-import { createContext,useState } from "react";
-import axios from 'axios'
+  // PLace it in Context  Folder
 
+//Import all api`s as the api
+import * as api from "../components/API/API";
 
-const BooksContext=createContext()
-function Provider({ children}){
-    const [books,setBooks]=useState([])
-    const [cart,setCart]=useState([null])
+import { createContext, useState } from "react";
 
-    const fetchCart=async()=>{
-        const token=localStorage.getItem('token')
-        const response=await axios.get('http://localhost:8000/api/auth/cartView',{
-            headers:{
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        setCart(response.data.cart)
-        console.log(response.data.cart);
+const BooksContext = createContext();
+function Provider({ children }) {
+  const [books, setBooks] = useState([]);
+  const [cart, setCart] = useState([null]);
 
+  const fetchCart = async () => {
+    try {
+      const response = await api.fetchCart();
+      setCart(response.data.cart);
+      console.log(response.data.cart);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-
-    const fetchBooks = async () =>{
-        const response =await axios.get('http://localhost:8000/api/auth/books')
-        setBooks(response.data.book)
-        console.log(response.data.book);
-        
+  const fetchBooks = async () => {
+    try {
+      const response = await api.fetchBooks();
+      setBooks(response.data.book);
+      console.log(response.data.book);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-     const valueToShare={
-        books:books,
-        fetchBooks:fetchBooks,
-        fetchCart:fetchCart,
-        cart:cart,setBooks,setCart
+  const valueToShare = {
+    books: books,
+    fetchBooks: fetchBooks,
+    fetchCart: fetchCart,
+    cart: cart,
+    setBooks,
+    setCart,
+  };
 
-       
-     }
-   
-    return <BooksContext.Provider value={valueToShare} >
-        {children}
-
+  return (
+    <BooksContext.Provider value={valueToShare}>
+      {children}
     </BooksContext.Provider>
+  );
 }
-export {Provider}
+export { Provider };
 export default BooksContext;
