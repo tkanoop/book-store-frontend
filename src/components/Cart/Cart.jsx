@@ -1,75 +1,102 @@
-import React from 'react';
+import React, {  useEffect, useState} from 'react';
+import useBookContext from '../../hooks/use-books-context';
+import axios from 'axios';
+
+
 
 const Cart = () => {
-  const cart = [
-    {
-      productId: 1,
-      name: 'Product 1',
-      image: 'https://example.com/product1.jpg',
-      quantity: 2,
-      price: 20.99,
-    },
-    {
-      productId: 2,
-      name: 'Product 2',
-      image: 'https://example.com/product2.jpg',
-      quantity: 1,
-      price: 15.49,
-    },
-    {
-      productId: 3,
-      name: 'Product 3',
-      image: 'https://example.com/product3.jpg',
-      quantity: 3,
-      price: 10.99,
-    },
-  ];
 
-  const calculateTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.quantity * item.price, 0);
-  };
+const {cart,setCart}=useBookContext()
+let total=0
+useEffect(() => {
+  const fetchCart=async()=>{
+    const token=localStorage.getItem('token')
+    const response=await axios.get('http://localhost:8000/api/auth/cartView',{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    console.log("cartitems",response.data.cart)
+    setCart(response.data.cart)
+    
+  }
+  fetchCart()  
+ 
+ 
+}, [])
+if(cart.length>0){
+  total= cart.reduce((total, item) => total + item?.Quantity * item?.Price, 0)
+}
+;
+console.log(cart);
 
-  const handleRemoveFromCart = (productId) => {
-    // Handle removing from cart
-  };
+
+const changeQty=async()=>{
+  const token=localStorage.getItem('token')
+    await axios.get('http://localhost:8000/api/auth/change-qty',{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+}
+ 
+
+
+ 
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <div>
-          {cart.map((item) => (
-            <div key={item.productId} className="flex items-center border-b border-gray-300 py-4">
-              <div className="flex-none w-24 h-24 mr-4">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-grow">
-                <p className="text-lg font-bold mb-2">{item.name}</p>
-                <div className="flex mb-2">
-                  <p className="text-gray-600 mr-4">Price: ${item.price}</p>
-                  <p className="text-gray-600">Quantity: {item.quantity}</p>
-                </div>
-                <button
-                  onClick={() => handleRemoveFromCart(item.productId)}
-                  className="text-red-500 font-bold"
-                >
-                  Remove
-                </button>
+    <div className="container mx-auto my-8 ">
+      <h1 className="text-3xl font-bold mb-4 text-center">Shopping Cart</h1>
+      <ul className="divide-y divide-gray-200">
+      { cart.length > 0 ? (
+        cart.map((item) => (
+          <li  className="flex justify-center items-center py-2 ml-6">
+            <div className="flex items-center space-x-4">
+              <img
+                src={item?.Image}
+                alt="book title"
+                className="w-10 h-10 object-cover rounded-full"
+              />
+              <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                <span className="font-bold">{item?.bookname}</span>
+                <span className="text-gray-600 ml-5 pl-6">Price: Rs{item?.Price} </span>
               </div>
             </div>
-          ))}
-
-          <div className="mt-8">
-            <p className="text-xl font-bold">Total Price: ${calculateTotalPrice()}</p>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-md mt-4">
-              Cash on Delivery
-            </button>
-          </div>
-        </div>
-      )}
+            <div className="flex items-center space-x-4 mt-2 md:mt-0 pl-6 ">
+              <button
+                className="text-sm bg-blue-500 text-white px-2 py-1  rounded"
+                
+              >
+                +
+              </button>
+              <span>{item?.Quantity}</span>
+              <button onClick={changeQty}
+                className="text-sm bg-red-500 text-white px-2 py-1 rounded"
+                
+              >
+                -
+              </button>
+              <button
+                className="text-sm text-red-500"
+                
+              >
+                Remove
+              </button>
+            </div>
+          </li>
+        ))
+        ) : (
+          // Handle case when cart is empty or undefined
+          <p>Your cart is empty.</p>
+        )}
+      </ul>
+      <div className="mt-4 flex flex-col items-center">
+        <h3 className="text-xl font-bold">Total: ${total}</h3>
+        <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">
+          Checkout
+        </button>
+      </div>
     </div>
   );
 };

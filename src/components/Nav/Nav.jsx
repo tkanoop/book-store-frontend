@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import useBookContext from '../../hooks/use-books-context';
 
 const Nav = () => {
+
+  const {fetchcart}=useBookContext()
+
+  useEffect(()=>{})
+
+const handleClick =()=>{
+
+}
+
+
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     window.location.reload();
@@ -16,7 +28,7 @@ const Nav = () => {
         <div className="flex items-center space-x-4">
           {/* Add cart icon */}
           <Link to="/cart" className="text-white">
-            <FaShoppingCart className="w-8 h-8 cursor-pointer" />
+            <FaShoppingCart className="w-8 h-8 cursor-pointer" onClick={handleClick} />
           </Link>
           
           {/* User icon */}

@@ -5,6 +5,19 @@ import axios from 'axios'
 const BooksContext=createContext()
 function Provider({ children}){
     const [books,setBooks]=useState([])
+    const [cart,setCart]=useState([null])
+
+    const fetchCart=async()=>{
+        const token=localStorage.getItem('token')
+        const response=await axios.get('http://localhost:8000/api/auth/cartView',{
+            headers:{
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        setCart(response.data.cart)
+        console.log(response.data.cart);
+
+    }
 
 
     const fetchBooks = async () =>{
@@ -16,7 +29,10 @@ function Provider({ children}){
 
      const valueToShare={
         books:books,
-        fetchBooks:fetchBooks
+        fetchBooks:fetchBooks,
+        fetchCart:fetchCart,
+        cart:cart,setBooks,setCart
+
        
      }
    

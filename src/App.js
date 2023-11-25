@@ -15,11 +15,7 @@ import CartPage from "./pages/CartPage";
 function App() {
 	const user = localStorage.getItem("token");
 
-	const {fetchBooks}=useBookContext()
-
-    useEffect(()=>{
-        fetchBooks()
-    },[])
+	
 
 
 	return (
