@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useBookContext from '../../hooks/use-books-context';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
@@ -25,7 +25,7 @@ const Cart = () => {
         setCart(null)
       }
     } catch (err) {
-      if (err.response.status == 404)
+      if (err.response.status === 404)
         navigate('/login')
       console.log('cannot load cart now');
     }
@@ -49,7 +49,7 @@ const Cart = () => {
     };
 
     const token = localStorage.getItem('token')
-    await axios.patch('https://localhost:8000/api/auth/change-qty', body, {
+    await axios.patch('https://book-store-backend-production-8e74.up.railway.app/api/auth/change-qty', body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

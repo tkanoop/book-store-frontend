@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import useAuth from '../../hooks/useAuth';
 
 
-const Nav = ({ loggedIn,cart }) => {
+const Nav = ({ loggedIn }) => {
+  const {auth,setAuth}=useAuth()
   const navigate = useNavigate()
-  console.log(cart)
+  
 
 
 
@@ -19,7 +21,8 @@ const Nav = ({ loggedIn,cart }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate("/login")
+    setAuth(false)
+    navigate("/")
   }
 
   return (
@@ -45,7 +48,7 @@ const Nav = ({ loggedIn,cart }) => {
 
           {/* Logout button */}
           {
-            loggedIn ? (<button
+            auth ? (<button
               className="bg-white text-teal-500 font-bold px-4 py-2 rounded-full"
               onClick={handleLogout}
             >

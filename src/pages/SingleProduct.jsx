@@ -3,19 +3,19 @@ import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
 import { useParams } from 'react-router-dom';
 import BooksContext from '../context/books';
-import useAuth from '../hooks/useAuth';
+
 
 const SingleProduct = () => {
   const { books } = useContext(BooksContext);
   const { _id } = useParams();
-  const {auth,setAuth}=useAuth()
+
 
   const filteredData = books.filter((product) => product._id === _id);
   const product = filteredData[0];
 
   return (
     <>
-      <Nav loggedIn={auth}/>
+      <Nav/>
       <div className="max-w-md mx-auto p-4 mt-8">
         {product ? (
           <>

@@ -26,7 +26,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = 'https://localhost:8000/api/users';
+      const url = 'https://book-store-backend-production-8e74.up.railway.app/api/users';
       const { data: res } = await axios.post(url, data);
       navigate('/login');
       console.log(res.message);

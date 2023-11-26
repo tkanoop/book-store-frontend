@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from'axios'
-import Swal from 'sweetalert2';
+
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
@@ -20,7 +20,7 @@ const bookId=book._id
             bookId:bookId
         }
         if(localStorage.getItem('token')){
-        const response =await axios.post("http://localhost:8000/api/auth/cart",postData,{
+        await axios.post("https://book-store-backend-production-8e74.up.railway.app/api/auth/cart",postData,{
             headers:{
                 Authorization: `Bearer ${token}`,
             },

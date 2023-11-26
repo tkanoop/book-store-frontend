@@ -25,7 +25,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = 'http://localhost:8000/api/auth';
+      const url = 'https://book-store-backend-production-8e74.up.railway.app/api/auth';
       const { data: res } = await axios.post(url, data);
       console.log(res);
       localStorage.setItem('token',res.data)
