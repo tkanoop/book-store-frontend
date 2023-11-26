@@ -20,7 +20,7 @@ const bookId=book._id
             bookId:bookId
         }
         if(localStorage.getItem('token')){
-        const response =await axios.post("/api/auth/cart",postData,{
+        const response =await axios.post("http://localhost:8000/api/auth/cart",postData,{
             headers:{
                 Authorization: `Bearer ${token}`,
             },

@@ -49,7 +49,7 @@ const Cart = () => {
     };
 
     const token = localStorage.getItem('token')
-    await axios.patch('https://book-store-backend-production-8e74.up.railway.app/api/auth/change-qty', body, {
+    await axios.patch('https://localhost:8000/api/auth/change-qty', body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

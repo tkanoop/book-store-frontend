@@ -1,7 +1,8 @@
 // PLace it in API folder 
 import axios from "axios";
 const API = axios.create({
-  baseURL:'https://book-store-backend-production-8e74.up.railway.app'
+  // baseURL:'https://book-store-backend-production-8e74.up.railway.app'
+  baseURL:"http://localhost:8000"
 });
 API.interceptors.request.use((req) => {
   console.log(localStorage.getItem("token"));

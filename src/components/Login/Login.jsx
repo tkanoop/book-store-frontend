@@ -25,7 +25,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = 'https://book-store-backend-production-8e74.up.railway.app/api/auth';
+      const url = 'http://localhost:8000/api/auth';
       const { data: res } = await axios.post(url, data);
       console.log(res);
       localStorage.setItem('token',res.data)
@@ -40,14 +40,7 @@ const Login = () => {
       }
     }
   };
-  const handleBook=()=>{
-    try {
-         axios.post('https://book-store-backend-production-8e74.up.railway.app/api/auth/booksAdding')
-        
-    } catch (error) {
-        
-    }
-  }
+ 
   useEffect(() => {
     const authenticationFunction = async () => {
       try {
@@ -105,9 +98,7 @@ const Login = () => {
                 Sign Up
               </button>
             </Link>
-            <button onClick={handleBook}>Click to add book
-
-            </button>
+           
           </div>
         </div>
       </div>
